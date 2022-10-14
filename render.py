@@ -122,17 +122,13 @@ class PyPhysXTaskRender:
             self.movable_objects_pyphysx.append(actor)
         return actor
 
-    def add_pyphysx_obstacle(self, obstacle_name):
+    def add_pyphysx_obstacle(self, urdf_name):
         """
         renders specific obstacle to the scene
 
-        :param obstacle_name: string of either 'tunnel', 'table' or 'shelf'
         :return: pyphysx object of the obstacle for rendering
         """
-        assert obstacle_name in ['tunnel', 'table', 'shelf'], \
-            f"ERROR: Wrong obstacle name! Correct obstacle names are 'tunnel', 'shelf' or 'table'"
 
-        urdf_name = "/tmp/cosyplan_" + obstacle_name + ".urdf"
         obstacle = pyphysx_utils.urdf_robot_parser.URDFRobot(urdf_name, kinematic=True)
         obstacle.attach_root_node_to_pose((0, 0, 0))
         obstacle.reset_pose()

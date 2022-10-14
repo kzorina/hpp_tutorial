@@ -115,4 +115,4 @@ class Table(object):
         """
         This function returns the name of the contact surface of the object
         """
-        return [prefix + "table_surface"]
+        return [prefix + "table_surface", ]

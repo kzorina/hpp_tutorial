@@ -17,8 +17,8 @@ class BasicTask():
         self.grippers = [self.robot.get_gripper_name(), ]
         self.furniture = [Table()]
         self.furniture_names = ['table']
-        self.objects = [Cuboid(0.05)]
-        self.object_names = ['cuboid']
+        self.objects = [Cuboid(0.05), Cuboid(0.07)]
+        self.object_names = ['cuboid', 'cuboid2']
 
         # setup problem
         self.ps = ProblemSolver(self.robot)
@@ -32,14 +32,15 @@ class BasicTask():
         for item, name in zip(self.furniture, self.furniture_names):
             prefix = name + '/'
             self.robot.loadEnvironmentModel(item.urdfFilename, item.srdfFilename, prefix)
-            # self.env_contact_surfaces += item.contact_surfaces(prefix)
-        print(self.env_contact_surfaces)
+            self.env_contact_surfaces += item.contact_surfaces(prefix)
+            self.render.add_pyphysx_obstacle(item.urdfFilename)
+
         self.handles_names = []
         self.object_surfaces = []
         for item, name in zip(self.objects, self.object_names):
             prefix = name + '/'
             self.handles_names.append(item.handles(prefix))
-            self.object_surfaces += item.contact_surfaces(prefix)
+            self.object_surfaces.append(item.contact_surfaces(prefix))
             self.robot.insertRobotModel(name, item.rootJointType, item.urdfFilename, item.srdfFilename)
             self.robot.setJointBounds(f'{name}/root_joint', generate_joint_bounds_unlimited_rot([-5] * 3, [5] * 3))
             self.render._create_pyphysx_actor_box(item.lengths)
